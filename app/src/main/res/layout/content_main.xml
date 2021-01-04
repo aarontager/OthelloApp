@@ -7,4 +7,5 @@
   app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <include layout="@layout/main_include_scoreinfo"/>
+    <include layout="@layout/main_include_board"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

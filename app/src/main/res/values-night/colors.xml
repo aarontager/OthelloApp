@@ -5,4 +5,5 @@
 
     <color name="primaryTextColoredColor">@color/primaryLightColor</color>
     <color name="secondaryTextColoredColor">@color/primaryColor</color>
+    <color name="backgroundColor">@color/cardview_dark_background</color>
 </resources>
