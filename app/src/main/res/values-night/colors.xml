@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryTextColor">#FF000000</color>
+    <color name="secondaryTextColor">#FF000000</color>
+
+    <color name="primaryTextColoredColor">@color/primaryLightColor</color>
+    <color name="secondaryTextColoredColor">@color/primaryColor</color>
+</resources>
