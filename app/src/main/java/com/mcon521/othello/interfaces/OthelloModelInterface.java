@@ -5,6 +5,10 @@ import com.mcon521.othello.classes.CellState;
 public interface OthelloModelInterface {
     CellState getCell(int row, int col);
 
+    CellState getCell(int pos);
+
+    CellState getTurn();
+
     int countPieces(CellState state);
 
     boolean isGameOver();

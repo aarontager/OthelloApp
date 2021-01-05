@@ -7,7 +7,7 @@
   android:layout_width="0dp"
   android:layout_height="match_parent"
   android:layout_marginTop="?actionBarSize"
-  app:cardBackgroundColor="@color/backgroundColor"
+  app:cardBackgroundColor="@color/secondaryDarkColor"
   app:cardCornerRadius="@dimen/no_margin"
   app:layout_constraintEnd_toEndOf="parent"
   app:layout_constraintStart_toStartOf="parent"
@@ -16,7 +16,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:padding="@dimen/half_margin"
       app:layoutManager="GridLayoutManager"
       app:spanCount="8"

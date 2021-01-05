@@ -4,10 +4,23 @@ import com.mcon521.othello.interfaces.OthelloModelInterface;
 
 public abstract class OthelloModel implements OthelloModelInterface {
     private Board board = new Board();
+    private CellState turn = CellState.BLACK;
 
     @Override
     public CellState getCell(int row, int col) {
         return board.getCell(row, col);
+    }
+
+    @Override
+    public CellState getCell(int pos) {
+        int row = pos / 8;
+        int col = pos % 8;
+        return board.getCell(row, col);
+    }
+
+    @Override
+    public CellState getTurn() {
+        return turn;
     }
 
     @Override

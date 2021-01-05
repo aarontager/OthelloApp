@@ -33,7 +33,18 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
     public void onBindViewHolder(@NonNull OthelloVH holder, int position) {
         // TODO: Get from the Model what color tile (or empty) belongs here.
         // Note that position is a 1-d array, while the model is a 2-d array
-        holder.imgtile.setImageResource(android.R.drawable.ic_media_play);
+        switch (othelloModel.getCell(position)) {
+            case NONE:
+                holder.imgtile.setImageResource(android.R.drawable.ic_media_pause);
+                break;
+            case BLACK:
+                holder.imgtile.setImageResource(android.R.drawable.ic_media_ff);
+                break;
+            case WHITE:
+                holder.imgtile.setImageResource(android.R.drawable.ic_media_rew);
+                break;
+
+        }
     }
 
     @Override
