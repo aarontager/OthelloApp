@@ -5,9 +5,14 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mcon521.othello.R;
+import com.mcon521.othello.classes.OthelloAdapter;
+import com.mcon521.othello.classes.OthelloModelOnePlayer;
+import com.mcon521.othello.classes.OthelloModelTwoPlayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
@@ -22,6 +27,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setupRV();
+    }
+
+    private void setupRV() {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 8));
+        recyclerView.setAdapter(new OthelloAdapter(new OthelloModelTwoPlayer()));
     }
 
     @Override

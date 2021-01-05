@@ -7,7 +7,7 @@ public interface OthelloModelInterface {
 
     int countPieces(CellState state);
 
-    boolean gameOver();
+    boolean isGameOver();
 
     boolean hasMove(CellState state);
 

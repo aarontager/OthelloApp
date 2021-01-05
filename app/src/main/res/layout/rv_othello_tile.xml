@@ -6,10 +6,12 @@
   android:layout_height="match_parent"
   app:cardBackgroundColor="@color/secondaryDarkColor">
 
-    <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="test"
-      android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+    <ImageView
+        android:id="@+id/img_tile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_play"
+        />
+
 
 </com.google.android.material.card.MaterialCardView>

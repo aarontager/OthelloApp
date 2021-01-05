@@ -11,7 +11,7 @@ public abstract class OthelloModel implements OthelloModelInterface {
     }
 
     @Override
-    public boolean gameOver() {
+    public boolean isGameOver() {
         return board.isFull() || !(hasMove(CellState.WHITE) || hasMove(CellState.BLACK));
     }
 
@@ -108,5 +108,10 @@ public abstract class OthelloModel implements OthelloModelInterface {
 
     private boolean checkGridBounds(int row, int col) {
         return !(row < 0 || col < 0 || row >= Board.GRID_SIZE || col >= Board.GRID_SIZE);
+    }
+
+    public int getBoardSize()
+    {
+        return board.getBoardSize();
     }
 }

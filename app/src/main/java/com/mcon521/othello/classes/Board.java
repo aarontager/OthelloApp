@@ -35,4 +35,9 @@ public class Board {
         }
         return true;
     }
+
+    public int getBoardSize()
+    {
+        return board.length * board.length;
+    }
 }
