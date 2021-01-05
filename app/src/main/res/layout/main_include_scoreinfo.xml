@@ -17,6 +17,7 @@
       app:layout_constraintGuide_percent=".5"/>
 
     <TextView
+      android:id="@+id/tv_white"
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:text="@string/white_score"
@@ -29,6 +30,7 @@
       app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
+      android:id="@+id/tv_black"
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:text="@string/black_score"

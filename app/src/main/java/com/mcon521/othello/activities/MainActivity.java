@@ -18,6 +18,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupRV() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 8));
-        recyclerView.setAdapter(new OthelloAdapter(new OthelloModelTwoPlayer()));
+        TextView white = findViewById(R.id.tv_white);
+        TextView black = findViewById(R.id.tv_black);
+        recyclerView.setAdapter(new OthelloAdapter(new OthelloModelTwoPlayer(), white, black));
     }
 
     @Override
