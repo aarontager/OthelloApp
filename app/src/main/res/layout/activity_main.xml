@@ -7,7 +7,7 @@
   android:layout_height="match_parent"
   tools:context=".activities.MainActivity">
 
-    <include layout="@layout/actionbar"/>
+    <include layout="@layout/main_include_actionbar"/>
     <include layout="@layout/content_main"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
