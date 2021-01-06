@@ -44,11 +44,11 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
                 holder.imgtile.setImageResource(android.R.drawable.ic_media_pause);
                 break;
             case BLACK:
-                holder.imgtile.setImageResource(android.R.drawable.ic_media_ff);
+                holder.imgtile.setImageResource(R.drawable.black_chess);
                 holder.imgtile.setColorFilter(R.color.black);
                 break;
             case WHITE:
-                holder.imgtile.setImageResource(android.R.drawable.ic_media_rew);
+                holder.imgtile.setImageResource(R.drawable.white_chess);
                 holder.imgtile.setColorFilter(R.color.white);
                 break;
 

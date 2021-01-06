@@ -1,5 +1,6 @@
 package com.mcon521.othello.classes;
 
+import com.google.gson.Gson;
 import com.mcon521.othello.interfaces.OthelloModelInterface;
 
 public abstract class OthelloModel implements OthelloModelInterface {
@@ -126,5 +127,10 @@ public abstract class OthelloModel implements OthelloModelInterface {
     public int getBoardSize()
     {
         return board.getBoardSize();
+    }
+
+    public String getJSONStringFromThis() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
