@@ -24,6 +24,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private TextView white,
+            black;
 
     OthelloModel mGame;
     TextView scoreBlack, scoreWhite;
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupToolBar();
         setupViews();
-        startNewGame(savedInstanceState == null ? "" : savedInstanceState.getString("GAME"));
+        startNewGame(savedInstanceState == null ? null : savedInstanceState.getString("GAME"));
         setupRV();
     }
 
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private void startNewGame(String existingGame) {
         mGame = existingGame == null ? new OthelloModelTwoPlayer() :
                 OthelloModelTwoPlayer.getModelFromJSONString(existingGame);
+//        mGame = new OthelloModelTwoPlayer();
         scoreWhite.setText(getString(R.string.white_score).concat("0"));
         scoreBlack.setText(getString(R.string.black_score).concat("0"));
     }
@@ -75,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRV() {
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 8));
-        TextView white = findViewById(R.id.tv_white);
-        TextView black = findViewById(R.id.tv_black);
+        white = findViewById(R.id.tv_white);
+        black = findViewById(R.id.tv_black);
         recyclerView.setAdapter(new OthelloAdapter(mGame, white, black));
     }
 
@@ -100,14 +104,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             launchSettings();
             return true;
-        }
-        else if (id == R.id.action_new_game)
-        {
+        } else if (id == R.id.action_new_game) {
             startNewGame(null);
+            recyclerView.setAdapter(new OthelloAdapter(new OthelloModelTwoPlayer(), white, black));
             return true;
-        }
-        else if (id == R.id.action_about)
-        {
+        } else if (id == R.id.action_about) {
             showAbout();
             return true;
         }
