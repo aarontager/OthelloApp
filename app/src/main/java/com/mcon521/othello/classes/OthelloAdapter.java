@@ -1,5 +1,6 @@
 package com.mcon521.othello.classes;
 
+import android.media.tv.TvContentRating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mcon521.othello.R;
 
-import java.util.Objects;
+import static com.mcon521.othello.activities.MainActivity.*;
 
 public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
-
-    private OthelloModel othelloModel;
-    private CellState turn;
     private TextView white, black;
 
-
-    public OthelloAdapter(OthelloModel othelloModel, TextView white, TextView black) {
-        this.othelloModel = othelloModel;
-        turn = CellState.BLACK;
+    public OthelloAdapter(TextView white, TextView black) {
         this.white = white;
         this.black = black;
     }
@@ -39,8 +34,9 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
     public void onBindViewHolder(@NonNull OthelloVH holder, int position) {
         // Note that position is a 1-d array, while the model is a 2-d array
         int[] gridPos = mapPositionToBoard(position);
-        switch (othelloModel.getCell(gridPos[0], gridPos[1])) {
+        switch (mGame.getCell(gridPos[0], gridPos[1])) {
             case NONE:
+                holder.imgtile.setImageResource(R.drawable.blank_tile);
                 break;
             case BLACK:
                 holder.imgtile.setImageResource(R.drawable.black_tile);
@@ -53,9 +49,12 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
 
         holder.itemView.setOnClickListener(v -> {
             int[] boardPos = mapPositionToBoard(position);
-            if(!othelloModel.isGameOver()) {
-                if (othelloModel.checkMoveValidity(boardPos, turn, true) > 0) {
+            if (!mGame.isGameOver()) {
+                if (mGame.checkMoveValidity(boardPos, turn, true) > 0) {
                     turn = (turn == CellState.WHITE) ? CellState.BLACK : CellState.WHITE;
+                    if (!mGame.hasMove(turn)) {
+                        turn = (turn == CellState.WHITE) ? CellState.BLACK : CellState.WHITE;
+                    }
                 }
                 this.notifyDataSetChanged();
                 updateScoreTracker();
@@ -64,16 +63,16 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
     }
 
     private void updateScoreTracker() {
-        white.setText("White score: " + othelloModel.countPieces(CellState.WHITE));
-        black.setText("Black score: " + othelloModel.countPieces(CellState.BLACK));
+        white.setText("White score: " + mGame.countPieces(CellState.WHITE));
+        black.setText("Black score: " + mGame.countPieces(CellState.BLACK));
     }
 
     @Override
     public int getItemCount() {
-        return othelloModel.getBoardSize();
+        return mGame.getBoardSize();
     }
 
     private int[] mapPositionToBoard(int pos) {
-        return new int[] {pos / 8, pos % 8};
+        return new int[]{pos / 8, pos % 8};
     }
 }

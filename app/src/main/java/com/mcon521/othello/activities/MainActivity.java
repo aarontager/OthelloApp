@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mcon521.othello.R;
+import com.mcon521.othello.classes.CellState;
 import com.mcon521.othello.classes.OthelloAdapter;
 import com.mcon521.othello.classes.OthelloModel;
 import com.mcon521.othello.classes.OthelloModelOnePlayer;
@@ -25,17 +26,17 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private TextView white,
-            black;
+    private TextView white, black;
 
-    OthelloModel mGame;
-    TextView scoreBlack, scoreWhite;
-    int gamesPlayedCount, blackWinCount, whiteWinCount;
+    public static OthelloModel mGame;
+    public static CellState turn;
+    public static int gamesPlayedCount, blackWinCount, whiteWinCount;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("GAME", mGame.getJSONStringFromThis());
+        outState.putString("TURN", turn.toString());
         outState.putInt("PLAYED", gamesPlayedCount);
         outState.putInt("WHITE", whiteWinCount);
         outState.putInt("BLACK", blackWinCount);
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         // game is restored in onCreate
         gamesPlayedCount = savedInstanceState.getInt("PLAYED");
+        turn = savedInstanceState.getString("TURN").equals("BLACK") ? CellState.BLACK : CellState.WHITE;
         whiteWinCount = savedInstanceState.getInt("WHITE");
         blackWinCount = savedInstanceState.getInt("BLACK");
     }
@@ -55,22 +57,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolBar();
-        setupViews();
-        startNewGame(savedInstanceState == null ? null : savedInstanceState.getString("GAME"));
-        setupRV();
-    }
 
-    private void setupViews() {
-        scoreBlack = findViewById(R.id.tv_black);
-        scoreWhite = findViewById(R.id.tv_white);
+        if (savedInstanceState != null) {
+            startNewGame(savedInstanceState.getString("GAME"));
+            turn = savedInstanceState.getString("TURN").equals("BLACK") ? CellState.BLACK : CellState.WHITE;
+        } else {
+            startNewGame(null);
+            turn = CellState.WHITE;
+        }
+
+        setupRV();
     }
 
     private void startNewGame(String existingGame) {
         mGame = existingGame == null ? new OthelloModelTwoPlayer() :
                 OthelloModelTwoPlayer.getModelFromJSONString(existingGame);
-//        mGame = new OthelloModelTwoPlayer();
-        scoreWhite.setText(getString(R.string.white_score).concat("0"));
-        scoreBlack.setText(getString(R.string.black_score).concat("0"));
     }
 
     private void setupToolBar() {
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 8));
         white = findViewById(R.id.tv_white);
         black = findViewById(R.id.tv_black);
-        recyclerView.setAdapter(new OthelloAdapter(mGame, white, black));
+        recyclerView.setAdapter(new OthelloAdapter(white, black));
     }
 
     @Override
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_new_game) {
             startNewGame(null);
-            recyclerView.setAdapter(new OthelloAdapter(new OthelloModelTwoPlayer(), white, black));
+            recyclerView.setAdapter(new OthelloAdapter(white, black));
             return true;
         } else if (id == R.id.action_about) {
             showAbout();
