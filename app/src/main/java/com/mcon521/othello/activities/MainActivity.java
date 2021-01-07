@@ -26,15 +26,15 @@ import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView tvWhite, tvBlack, tvTurn;
-    private String gameKeyString = "GAME",
-            turnKeyString = "TURN",
-            whiteWinString = "WHITE",
-            blackWinString = "BLACK",
-            gameCountString = "PLAYED";
 
     public static OthelloModel mGame;
     public static CellState turn;
     public static int gamesPlayedCount, blackWinCount, whiteWinCount;
+    public static String gameKeyString = "GAME",
+            turnKeyString = "TURN",
+            whiteWinString = "WHITE",
+            blackWinString = "BLACK",
+            gameCountString = "PLAYED";
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
             turn = savedInstanceState.getString(turnKeyString).equals(blackWinString) ? CellState.BLACK : CellState.WHITE;
         } else {
             startNewGame(null);
-            turn = getDefaultSharedPreferences(this).
-                    getBoolean(getString(R.string.white_first_key), false) ? CellState.WHITE : CellState.BLACK;
         }
 
         setupRV();
@@ -77,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
     private void startNewGame(String existingGame) {
         mGame = existingGame == null ? new OthelloModelTwoPlayer() :
                 OthelloModelTwoPlayer.getModelFromJSONString(existingGame);
+        turn = getDefaultSharedPreferences(this).
+                getBoolean(getString(R.string.white_first_key), false) ? CellState.WHITE : CellState.BLACK;
     }
 
     private void setupToolBar() {
@@ -108,7 +108,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_stats) {
+            showStats();
+            return true;
+        } else if (id == R.id.action_settings) {
             launchSettings();
             return true;
         } else if (id == R.id.action_new_game) {
@@ -131,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
     private void launchSettings() {
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivityForResult(intent, 1);
+    }
+
+    private void showStats() {
+        Intent intent = new Intent(getApplicationContext(), StatsActivity.class);
+        intent.putExtra(gameCountString, gamesPlayedCount);
+        intent.putExtra(whiteWinString, whiteWinCount);
+        intent.putExtra(blackWinString, blackWinCount);
+        startActivity(intent);
     }
 
 

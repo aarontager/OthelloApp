@@ -72,6 +72,7 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
     private void setWinner(Context c) {
         int whiteScore = mGame.countPieces(CellState.WHITE);
         int blackScore = mGame.countPieces(CellState.BLACK);
+        gamesPlayedCount++;
 
         if (whiteScore > blackScore) {
             whiteWinCount++;

@@ -6,6 +6,11 @@
     <item
         android:id="@+id/action_new_game"
         android:title="@string/new_game"
+        android:icon="@android:drawable/ic_media_play"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_stats"
+        android:title="@string/title_activity_stats"
         app:showAsAction="never"/>
     <item
       android:id="@+id/action_settings"
