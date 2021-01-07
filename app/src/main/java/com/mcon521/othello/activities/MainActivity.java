@@ -1,5 +1,7 @@
 package com.mcon521.othello.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,9 +26,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView white, black;
+    private String gameKeyString = "GAME",
+            turnKeyString = "TURN",
+            whiteWinString = "WHITE",
+            blackWinString = "BLACK",
+            gameCountString = "PLAYED";
 
     public static OthelloModel mGame;
     public static CellState turn;
@@ -35,21 +44,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("GAME", mGame.getJSONStringFromThis());
-        outState.putString("TURN", turn.toString());
-        outState.putInt("PLAYED", gamesPlayedCount);
-        outState.putInt("WHITE", whiteWinCount);
-        outState.putInt("BLACK", blackWinCount);
+        outState.putString(gameKeyString, mGame.getJSONStringFromThis());
+        outState.putString(turnKeyString, turn.toString());
+        outState.putInt(gameCountString, gamesPlayedCount);
+        outState.putInt(whiteWinString, whiteWinCount);
+        outState.putInt(blackWinString, blackWinCount);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // game is restored in onCreate
-        gamesPlayedCount = savedInstanceState.getInt("PLAYED");
-        turn = savedInstanceState.getString("TURN").equals("BLACK") ? CellState.BLACK : CellState.WHITE;
-        whiteWinCount = savedInstanceState.getInt("WHITE");
-        blackWinCount = savedInstanceState.getInt("BLACK");
+        gamesPlayedCount = savedInstanceState.getInt(gameCountString);
+        turn = savedInstanceState.getString(turnKeyString).equals(blackWinString) ? CellState.BLACK : CellState.WHITE;
+        whiteWinCount = savedInstanceState.getInt(whiteWinString);
+        blackWinCount = savedInstanceState.getInt(blackWinString);
     }
 
     @Override
@@ -59,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         setupToolBar();
 
         if (savedInstanceState != null) {
-            startNewGame(savedInstanceState.getString("GAME"));
-            turn = savedInstanceState.getString("TURN").equals("BLACK") ? CellState.BLACK : CellState.WHITE;
+            startNewGame(savedInstanceState.getString(gameKeyString));
+            turn = savedInstanceState.getString(turnKeyString).equals(blackWinString) ? CellState.BLACK : CellState.WHITE;
         } else {
             startNewGame(null);
             turn = CellState.WHITE;
@@ -72,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     private void startNewGame(String existingGame) {
         mGame = existingGame == null ? new OthelloModelTwoPlayer() :
                 OthelloModelTwoPlayer.getModelFromJSONString(existingGame);
+        turn = getDefaultSharedPreferences(this).
+                getBoolean(getString(R.string.white_first_key), true) ? CellState.WHITE : CellState.BLACK;
     }
 
     private void setupToolBar() {
@@ -119,10 +130,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAbout() {
-        Utils.showInfoDialog(this, "About", "created by Aaron and Bryan");
+        Utils.showInfoDialog(this, "About", "Created by Aaron and Bryan");
     }
 
     private void launchSettings() {
-        // TODO - bring in Settings Activity Java and XML, and code to launch it here
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveOrDeleteGameInSharedPrefs();
+    }
+
+    private void saveOrDeleteGameInSharedPrefs() {
+        SharedPreferences defaultSharedPreferences = getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+
+        // Save current game or remove any prior game to/from default shared preferences
+        if (defaultSharedPreferences.getBoolean(getString(R.string.auto_save_key), true)) {
+            editor.putString(gameKeyString, mGame.getJSONStringFromThis());
+            editor.putString(turnKeyString, turn.toString());
+        } else
+            editor.remove(gameKeyString);
+
+        editor.apply();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        restoreFromPreferences_SavedGameIfAutoSaveWasSetOn();
+    }
+
+    private void restoreFromPreferences_SavedGameIfAutoSaveWasSetOn() {
+        SharedPreferences defaultSharedPreferences = getDefaultSharedPreferences(this);
+        if (defaultSharedPreferences.getBoolean(getString(R.string.auto_save_key), true)) {
+            String gameString = defaultSharedPreferences.getString(gameKeyString, null);
+            if (gameString != null) {
+                mGame = OthelloModelTwoPlayer.getModelFromJSONString(gameString);
+                turn = defaultSharedPreferences.getString(turnKeyString, "").equals(blackWinString) ? CellState.BLACK : CellState.WHITE;
+            }
+        }
     }
 }

@@ -19,5 +19,25 @@
     <string name="auto_save_title">Auto-Save Game and Statistics</string>
     <string name="auto_save_off">On exit, the game in progress and statistics *won\'t* be saved</string>
     <string name="auto_save_on">On exit, the game in progress and statistics *will* be saved</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="white_first_title">White goes first</string>
+    <string name="white_first_on">White will go first</string>
+    <string name="white_first_off">Black will go first</string>
+    <string name="white_first_key">white-first</string>
 
 </resources>
