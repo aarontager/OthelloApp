@@ -43,7 +43,8 @@
            parent="ThemeOverlay.AppCompat.Light"/>
 
 
-    <style name="Theme.Othello.NoActionBar.Dialog" parent="Theme.MaterialComponents.DayNight.Dialog.MinWidth">
+    <style name="Theme.Othello.NoActionBar.Dialog"
+           parent="Theme.MaterialComponents.DayNight.Dialog.MinWidth">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -57,9 +58,11 @@
 
         <item name="colorAccent">@color/secondaryColor</item>
 
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/secondaryDarkColor
+        <item name="android:navigationBarColor"
+              tools:targetApi="lollipop">@color/secondaryDarkColor
         </item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/secondaryDarkColor
+        <item name="android:statusBarColor"
+              tools:targetApi="lollipop">@color/secondaryDarkColor
         </item>
     </style>
 </resources>

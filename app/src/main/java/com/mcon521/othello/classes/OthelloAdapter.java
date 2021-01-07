@@ -1,24 +1,27 @@
 package com.mcon521.othello.classes;
 
-import android.media.tv.TvContentRating;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mcon521.othello.R;
+import com.mcon521.othello.lib.Utils;
 
 import static com.mcon521.othello.activities.MainActivity.*;
 
 public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
-    private TextView white, black;
+    private TextView tvWhite, tvBlack, tvTurn;
 
-    public OthelloAdapter(TextView white, TextView black) {
-        this.white = white;
-        this.black = black;
+    public OthelloAdapter(TextView white, TextView black, TextView turn) {
+        this.tvWhite = white;
+        this.tvBlack = black;
+        this.tvTurn = turn;
     }
 
     @NonNull
@@ -32,17 +35,18 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
 
     @Override
     public void onBindViewHolder(@NonNull OthelloVH holder, int position) {
+        ImageView img = holder.imgtile;
         // Note that position is a 1-d array, while the model is a 2-d array
         int[] gridPos = mapPositionToBoard(position);
         switch (mGame.getCell(gridPos[0], gridPos[1])) {
             case NONE:
-                holder.imgtile.setImageResource(R.drawable.blank_tile);
+                img.setImageResource(R.drawable.blank_tile);
                 break;
             case BLACK:
-                holder.imgtile.setImageResource(R.drawable.black_tile);
+                img.setImageResource(R.drawable.black_tile);
                 break;
             case WHITE:
-                holder.imgtile.setImageResource(R.drawable.white_tile);
+                img.setImageResource(R.drawable.white_tile);
                 break;
 
         }
@@ -59,12 +63,32 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
                 this.notifyDataSetChanged();
                 updateScoreTracker();
             }
+            if (mGame.isGameOver()) {
+                setWinner(img.getContext());
+            }
         });
     }
 
+    private void setWinner(Context c) {
+        int whiteScore = mGame.countPieces(CellState.WHITE);
+        int blackScore = mGame.countPieces(CellState.BLACK);
+
+        if (whiteScore > blackScore) {
+            whiteWinCount++;
+            Utils.showInfoDialog(c, "Winner!", "White won this time!");
+        } else {
+            blackWinCount++;
+            Utils.showInfoDialog(c, "Winner!", "Black won this time!");
+        }
+
+        mGame = new OthelloModelTwoPlayer();
+        this.notifyDataSetChanged();
+    }
+
     private void updateScoreTracker() {
-        white.setText("White score: " + mGame.countPieces(CellState.WHITE));
-        black.setText("Black score: " + mGame.countPieces(CellState.BLACK));
+        tvWhite.setText("White score: " + mGame.countPieces(CellState.WHITE));
+        tvBlack.setText("Black score: " + mGame.countPieces(CellState.BLACK));
+        tvTurn.setText(turn.toString() + "'s turn");
     }
 
     @Override

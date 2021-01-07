@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/board"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/secondaryDarkColor"
-    app:cardCornerRadius="@dimen/no_margin"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/card_score">
+<com.google.android.material.card.MaterialCardView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/board"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  app:cardCornerRadius="@dimen/no_margin"
+  app:layout_constraintBottom_toBottomOf="@+id/turn_text_card"
+  app:layout_constraintEnd_toEndOf="parent"
+  app:layout_constraintStart_toStartOf="parent"
+  app:layout_constraintTop_toBottomOf="@+id/card_score">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/half_margin"
-        app:layoutManager="GridLayoutManager"
-        app:spanCount="8"
-        tools:itemCount="64"
-        tools:listitem="@layout/rv_othello_tile" />
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:background="@color/secondaryDarkColor">
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recycler_view"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="@dimen/half_margin"
+          app:layoutManager="GridLayoutManager"
+          app:spanCount="8"
+          tools:itemCount="64"
+          tools:listitem="@layout/rv_othello_tile"/>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

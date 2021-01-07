@@ -11,8 +11,12 @@
       android:supportsRtl="true"
       android:theme="@style/Theme.Othello">
         <activity
+          android:name=".activities.StatsActivity"
+          android:label="@string/title_activity_stats"
+          android:theme="@style/Theme.Othello.NoActionBar"></activity>
+        <activity
           android:name=".activities.SettingsActivity"
-          android:label="@string/title_activity_settings"></activity>
+          android:label="@string/title_activity_settings"/>
         <activity
           android:name=".activities.SplashActivity"
           android:theme="@style/Theme.Othello.NoActionBar.SplashScreenTheme">

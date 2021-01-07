@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.mcon521.othello.R;
 import com.mcon521.othello.classes.CellState;
 import com.mcon521.othello.classes.OthelloAdapter;
 import com.mcon521.othello.classes.OthelloModel;
-import com.mcon521.othello.classes.OthelloModelOnePlayer;
 import com.mcon521.othello.classes.OthelloModelTwoPlayer;
 import com.mcon521.othello.lib.Utils;
 
@@ -20,8 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -30,7 +25,7 @@ import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private TextView white, black;
+    private TextView tvWhite, tvBlack, tvTurn;
     private String gameKeyString = "GAME",
             turnKeyString = "TURN",
             whiteWinString = "WHITE",
@@ -72,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
             turn = savedInstanceState.getString(turnKeyString).equals(blackWinString) ? CellState.BLACK : CellState.WHITE;
         } else {
             startNewGame(null);
-            turn = CellState.WHITE;
+            turn = getDefaultSharedPreferences(this).
+                    getBoolean(getString(R.string.white_first_key), false) ? CellState.WHITE : CellState.BLACK;
         }
 
         setupRV();
@@ -81,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
     private void startNewGame(String existingGame) {
         mGame = existingGame == null ? new OthelloModelTwoPlayer() :
                 OthelloModelTwoPlayer.getModelFromJSONString(existingGame);
-        turn = getDefaultSharedPreferences(this).
-                getBoolean(getString(R.string.white_first_key), true) ? CellState.WHITE : CellState.BLACK;
     }
 
     private void setupToolBar() {
@@ -93,9 +87,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupRV() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 8));
-        white = findViewById(R.id.tv_white);
-        black = findViewById(R.id.tv_black);
-        recyclerView.setAdapter(new OthelloAdapter(white, black));
+        tvWhite = findViewById(R.id.tv_white);
+        tvBlack = findViewById(R.id.tv_black);
+        tvTurn = findViewById(R.id.tv_turn);
+        recyclerView.setAdapter(new OthelloAdapter(tvWhite, tvBlack, tvTurn));
     }
 
     @Override
@@ -118,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_new_game) {
             startNewGame(null);
-            recyclerView.setAdapter(new OthelloAdapter(white, black));
+            recyclerView.setAdapter(new OthelloAdapter(tvWhite, tvBlack, tvTurn));
             return true;
         } else if (id == R.id.action_about) {
             showAbout();
