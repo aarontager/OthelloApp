@@ -77,9 +77,11 @@ public class OthelloAdapter extends RecyclerView.Adapter<OthelloVH> {
         if (whiteScore > blackScore) {
             whiteWinCount++;
             Utils.showInfoDialog(c, "Winner!", "White won this time!");
-        } else {
+        }else if (blackScore > whiteScore) {
             blackWinCount++;
             Utils.showInfoDialog(c, "Winner!", "Black won this time!");
+        } else {
+            Utils.showInfoDialog(c, "Tie!!", "This game was a tie!");
         }
 
         mGame = new OthelloModelTwoPlayer();
